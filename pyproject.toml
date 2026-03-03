@@ -10,7 +10,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "sqlalchemy (>=2.0.48,<3.0.0)",
-    "aiosqlite (>=0.22.1,<0.23.0)"
+    "aiosqlite (>=0.22.1,<0.23.0)",
+    "alembic (>=1.18.4,<2.0.0)"
 ]
 
 
