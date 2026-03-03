@@ -1,13 +1,13 @@
 from datetime import date, time
+from typing import List
 
-from sqlalchemy import Integer, String, Numeric, Date, Time, ForeignKey
+from sqlalchemy import Integer, String, Numeric, Date, Time
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 
-
-class Cell(Base):
-    __tablename__ = "cells"
+class Battery(Base):
+    __tablename__ = "batteries"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     type: Mapped[str] = mapped_column(String(50), unique=True, index=True, nullable=False)
     barcode: Mapped[str] = mapped_column(String(50), unique=True, index=True, nullable=False)
@@ -16,6 +16,4 @@ class Cell(Base):
     time_discharged: Mapped[time] = mapped_column(Time)
     tested_at: Mapped[date] = mapped_column(Date, nullable=False)
 
-    battery_id: Mapped[int] = mapped_column(Integer, ForeignKey("batteries.id"))
-    battery: Mapped["Battery"] = relationship(back_populates="cell")
-
+    cells: Mapped[List["Cell"]] = relationship(back_populates="battery")
