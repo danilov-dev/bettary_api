@@ -23,6 +23,9 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+
+from app.models.cell import Cell
+from app.models.battery import Battery
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -57,7 +60,12 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        # For SQLite
+        render_as_batch=True,
+    )
 
     with context.begin_transaction():
         context.run_migrations()
