@@ -16,6 +16,6 @@ class Cell(Base):
     time_discharged: Mapped[time] = mapped_column(Time)
     tested_at: Mapped[date] = mapped_column(Date, nullable=False)
 
-    battery_id: Mapped[int] = mapped_column(Integer, ForeignKey("batteries.id"))
-    battery: Mapped["Battery"] = relationship(back_populates="cell")
+    battery_id: Mapped[int] = mapped_column(Integer, ForeignKey("batteries.id"), nullable=True)
+    battery: Mapped["Battery"] = relationship(back_populates="cells")
 
