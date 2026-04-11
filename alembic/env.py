@@ -26,6 +26,7 @@ if config.config_file_name is not None:
 
 from app.models.cell import Cell
 from app.models.battery import Battery
+from app.models.product_model import ProductModel
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
