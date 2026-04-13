@@ -46,7 +46,7 @@ class MainView(Screen):
 
     def __init__(self, session_factory=None):
         super().__init__()
-        self.session_factory = session_factory or AsyncSessionLocal
+        self.session_factory = session_factory or async_session_maker
         self.current_screen_id = "home"
 
     def compose(self) -> ComposeResult:
