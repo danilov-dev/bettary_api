@@ -13,7 +13,7 @@ engine = create_async_engine(
     connect_args={'check_same_thread': False}
 )
 
-AsyncSessionLocal = async_sessionmaker(
+async_session_maker = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False
@@ -30,5 +30,12 @@ class Base(DeclarativeBase):
 
 
 async def get_db():
-    async with AsyncSessionLocal() as session:
-        yield session
+    async with async_session_maker() as session:
+        try:
+            yield session
+        finally:
+            await session.close()
+
+async def init_db():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
