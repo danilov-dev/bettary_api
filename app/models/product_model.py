@@ -24,5 +24,5 @@ class ProductModel(Base):
     weight: Mapped[float] = mapped_column(Float, nullable=False)
     length: Mapped[float] = mapped_column(Float, nullable=False)
 
-    battery: Mapped[List["Battery"]] = relationship(back_populates="product_model")
-    cell: Mapped[List["Cell"]] = relationship(back_populates="product_model")
+    batteries: Mapped[List["Battery"]] = relationship(back_populates="product_model")
+    cells: Mapped[List["Cell"]] = relationship(back_populates="product_model")
