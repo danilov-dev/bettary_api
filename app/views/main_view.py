@@ -12,6 +12,9 @@ class MainView(Screen):
     """Главный экран приложения с табами."""
 
     DEFAULT_CSS = """
+    MainView{
+        min-width: 100%;
+    }
     TabbedContent {
         margin: 0;
         padding: 0;
@@ -43,6 +46,7 @@ class MainView(Screen):
         # Указываем initial по имени вкладки (без суффиксов)
         with TabbedContent(initial="home"):
             with TabPane("🏠 HOME", id="home"):
+                # yield HomeView(session_factory=self.session_factory)
                 yield HomeView(session_factory=self.session_factory)
 
             with TabPane("📊 DATA", id="data"):

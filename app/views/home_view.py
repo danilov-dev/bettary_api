@@ -13,59 +13,33 @@ from app.services.cell_service import CellService
 
 class HomeView(Widget):
     DEFAULT_CSS = """
-    HomeView {
-        height: 100%;
-        width: 100%;
-        padding: 0 2;
+    HomeView{
         height: 1fr;
         layout: vertical;
-        overflow-y:auto;
-        overflow-x:auto;
+        align: center top;
     }
 
-    
-    .header {
-        padding: 0 2;
-        width: 100%;
-        height: 1fr;
-        layout: horizontal;
-        border-bottom: solid $secondary
+    .header{
+        height: 10;
+        align: center top;
+        border-bottom: solid $secondary 30%
     }
-    
+
     .container {
-        layout: vertical;
-        content-align: center middle;
-        box-sizing: border-box;
-        padding: 0 0 0 4
-    }
-    .header-inbox{
-        border: vkey $secondary;
         width: 1fr;
-        height: auto;
+        align: center middle;
+        
+        border: vkey $secondary 30%
     }
-    
-    .container > Digits{
-        content-align: center middle;
-    }
-    
-    Digits, Label{
-        width: 100%;
-        height: 1fr;
-    }
-    
-    .test{
-        layout: horizontal;
-        content-align: center middle;
-    }
-    .box {
-        height: 100%;
+
+    .digits{
         width: 1fr;
-        border: solid $secondary;
+        text-align: center;
     }
-    .body{
-        height: 3fr;
-    }    
-    
+    .label{
+        width: 1fr;
+        text-align: center;
+    }
     """
 
     def __init__(self, session_factory=None):
@@ -74,25 +48,30 @@ class HomeView(Widget):
 
     def compose(self) -> ComposeResult:
         with Horizontal(classes="header"):
-            with Vertical(classes="container header-inbox"):
-                yield Digits("0", id="cell_counter")
-                yield Label("cells", classes="")
-            with Vertical(classes="container header-inbox"):
-                yield Digits("0", id="battery_counter")
-                yield Label("batteries", classes="")
-            with Vertical(classes="container header-inbox"):
-                yield Digits("00-00-00", id="record")
-                yield Label("last record", classes="")
-            with Vertical(classes="container header-inbox"):
-                yield Digits("00.00.00", id="equipment")
-                yield Label("last equipment", classes="")
-            with Vertical(classes="container clock-box header-inbox"):
-                yield Digits("", id="clock")
-        with Vertical(classes="body container"):
-            with Horizontal(classes="test"):
-                yield Container(Label("One"), classes="box")
-                yield Static("Two", classes="box")
-                yield Static("Three", classes="box")
+            with Container(classes="container"):
+                yield Digits("0", id="cell_counter", classes="digits")
+                yield Label("cells", classes="label")
+            with Container(classes="container header-inbox"):
+                yield Digits("0", id="battery_counter", classes="digits")
+                yield Label("batteries", classes="label")
+            with Container(classes="container header-inbox"):
+                yield Digits("00-00-00", id="record", classes="digits")
+                yield Label("last record", classes="label")
+            with Container(classes="container header-inbox"):
+                yield Digits("00.00.00", id="equipment", classes="digits")
+                yield Label("last equipment", classes="label")
+            with Container(classes="container"):
+                yield Digits("", id="clock", classes="digits")
+        with Horizontal(classes="body"):
+            with Container(classes="container"):
+                yield Digits("1", classes="digits")
+                yield Label("One", classes="label")
+            with Container(classes="container"):
+                yield Digits("2", classes="digits")
+                yield Label("Two", classes="label")
+            with Container(classes="container"):
+                yield Digits("3", classes="digits")
+                yield Label("Three", classes="label")
 
     def on_mount(self) -> None:
         self.update_clock()
