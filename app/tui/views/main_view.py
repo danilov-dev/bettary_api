@@ -3,9 +3,9 @@ from textual.screen import Screen
 from textual.widgets import Header, Footer, TabbedContent, TabPane
 
 from app.core.database import async_session_maker
-from app.views.data_view import DataView
-from app.views.home_view import HomeView
-from app.views.settings_view import SettingsView
+from app.tui.views.data_view import DataView
+from app.tui.views.home_view import HomeView
+from app.tui.views.settings_view import SettingsView
 
 
 class MainView(Screen):

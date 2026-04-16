@@ -1,7 +1,7 @@
 from textual.app import App
 
 from app.core import async_session_maker
-from app.views.main_view import MainView
+from app.tui.views.main_view import MainView
 
 
 class Application(App):
