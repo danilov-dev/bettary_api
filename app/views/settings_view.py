@@ -10,6 +10,7 @@ class SettingsView(Widget):
     DEFAULT_CSS = """
     SettingsView {
         padding: 1;
+        height: 1fr;
     }
 
     .title {

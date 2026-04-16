@@ -1,6 +1,6 @@
 from textual.app import App
 
-from app.core.database import async_session_maker
+from app.core import async_session_maker
 from app.views.main_view import MainView
 
 

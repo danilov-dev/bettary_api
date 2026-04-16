@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List, Optional
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
@@ -12,6 +13,12 @@ class CellService:
     def __init__(self, session_factory: async_sessionmaker):
         self.session_factory = session_factory
 
+    async def get_count(self) -> int:
+        """Получить общее кол-во записей"""
+        async with self.session_factory() as session:
+            repo = CellRepository(model=Cell, db_session=session)
+            return await repo.get_count()
+
     async def get_all(self, limit: int = 100, offset: int = 0) -> List[Cell]:
         """Получить все ячейки с пагинацией."""
         async with self.session_factory() as session:
@@ -23,6 +30,12 @@ class CellService:
         async with self.session_factory() as session:
             repo = CellRepository(model=Cell, db_session=session)
             return await repo.get_by_id(cell_id)
+
+    async def get_last_record(self) -> date:
+        """Получить дату последней записи"""
+        async with self.session_factory() as session:
+            repo = CellRepository(model=Cell, db_session=session)
+            return await repo.get_last_record()
 
     async def create_cell(self, data: dict) -> Cell:
         """Создать новую ячейку."""

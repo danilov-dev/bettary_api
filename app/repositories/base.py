@@ -2,7 +2,7 @@ from typing import Generic, TypeVar, Optional, List, Type
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import delete
+from sqlalchemy import delete, func
 
 from app.core.database import Base
 
@@ -29,6 +29,14 @@ class BaseRepository(Generic[ModelType]):
             select(self.model).offset(offset).limit(limit)
         )
         return list(result.scalars().all())
+
+    async def get_count(self) -> int:
+        """Получить общее кол-во записей"""
+        result = await self.db_session.execute(
+            select(func.count()).select_from(self.model)
+        )
+        return result.scalar() or 0
+
 
     async def create(self, obj_in: dict) -> ModelType:
         """Создать новую сущность."""
