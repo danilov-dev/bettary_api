@@ -3,6 +3,7 @@ from textual.screen import Screen
 from textual.widgets import Header, Footer, TabbedContent, TabPane
 
 from app.core.database import async_session_maker
+from app.core.logger import app_logger
 from app.tui.views.data_view import DataView
 from app.tui.views.home_view import HomeView
 from app.tui.views.settings_view import SettingsView
@@ -39,6 +40,7 @@ class MainView(Screen):
     def __init__(self, session_factory=None):
         super().__init__()
         self.session_factory = session_factory or async_session_maker
+        self.logger = app_logger.get_logger("tui.main_view")
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -59,3 +61,4 @@ class MainView(Screen):
 
     def on_mount(self) -> None:
         self.title = "Battery System"
+        self.logger.info("MainView загружен")

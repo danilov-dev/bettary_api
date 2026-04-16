@@ -8,9 +8,10 @@ from textual.widget import Widget
 from textual.widgets import Static, Label, Digits
 
 from app.core.database import async_session_maker
+from app.core.logger import app_logger
 from app.messages import MainDataRequested, MainDataLoaded
 from app.services.cell_service import CellService
-from app.tui.widgets.log_widget import LogWidget  # Импортируем новый виджет
+from app.tui.widgets.log_widget import LogWidget
 
 
 class HomeView(Widget):
@@ -51,13 +52,17 @@ class HomeView(Widget):
         height: 1fr;
         margin-top: 1;
     }
+    .footer {
+        height: 1fr;
+        margin-top: 1;
+    }
 
     """
 
     def __init__(self, session_factory=None):
         super().__init__()
         self.session_factory = session_factory or async_session_maker()
-        self.logger = logging.getLogger(__name__)
+        self.logger = app_logger.get_logger("tui.home_view")
 
     def compose(self) -> ComposeResult:
         # Верхняя панель (оставляем как есть)
@@ -77,7 +82,7 @@ class HomeView(Widget):
             with Container(classes="container"):
                 yield Digits("", id="clock", classes="digits")
 
-        # Нижняя панель с тремя контейнерами
+        # Центральная панель с тремя контейнерами
         with Horizontal(classes="body"):
             with Container(classes="container"):
                 yield Digits("1", classes="digits")
@@ -88,19 +93,24 @@ class HomeView(Widget):
                 yield Label("Two", classes="label")
 
             with Container(classes="container wide-container"):
-                yield Label("Logs", classes="label")
-                yield LogWidget(id="log_widget")
+                yield Digits("3", classes="digits")
+                yield Label("Three", classes="label")
+        # Нижняя панель с логами
+        with Vertical(classes="footer"):
+            yield Label("Logs", classes="label")
+            yield LogWidget(id="log_widget")
 
     def on_mount(self) -> None:
-        """При монтировании виджета"""
         self.update_clock()
         self.set_interval(1, self.update_clock)
         self.post_message(MainDataRequested())
 
+        # Подключаем виджет к центральному логгеру
         log_widget = self.query_one("#log_widget", LogWidget)
-        log_widget.attach_std_logger(logger_name="app.tui.views.home_view", level=logging.DEBUG)
+        app_logger.attach_widget(log_widget)
+
         self.logger.info("HomeView инициализирован")
-        self.logger.error("Testing color")
+        self.logger.debug("Тестовое сообщение для проверки")
 
     def update_clock(self) -> None:
         """Обновление часов"""
